@@ -180,7 +180,7 @@ _Add screenshot here_
 
 ## 👩‍💻 Developed By
 
-**V NagaSri Varsha**
+**V Naga Sri Varsha**
 
 B.Tech – Computer Science Engineering (AI & ML)
 
