@@ -150,19 +150,21 @@ http://127.0.0.1:5000
 
 ### Dashboard
 
-_Add screenshot here_
+![Dashboard](screenshots/dashboard.png)
 
 ### Add Company
 
-_Add screenshot here_
+![Add Company](screenshots/add-company.png)
 
 ### Company Comparison
 
-_Add screenshot here_
+![Comparison](screenshots/compare.png)
 
 ### Analytics Dashboard
 
-_Add screenshot here_
+![Analytics](screenshots/analytics.png)
+![Analytics](screenshots/analytics1.png)
+![Analytics](screenshots/analytics2.png)
 
 ---
 
