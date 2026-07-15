@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SalesPro Technologies | AI Sales Intelligence</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ========================= -->
+    <!-- Sidebar -->
+    <!-- ========================= -->
+
+    <aside class="sidebar">
+
+        <h2>SalesPro Technologies</h2>
+
+        <a href="/">🏠 Dashboard</a>
+
+        <a href="/add">➕ Add Company</a>
+
+        <a href="/compare">⚖ Compare</a>
+
+        <a href="/analytics">📊 Analytics</a>
+
+        <a href="/export">📄 Export CSV</a>
+
+        <hr>
+
+        <h3>Companies</h3>
+
+        {% for c in companies %}
+
+        <a href="/?company={{ c.id }}">
+
+            {{ c.company_name }}
+
+        </a>
+
+        {% endfor %}
+
+    </aside>
+
+
+    <!-- ========================= -->
+    <!-- Main Content -->
+    <!-- ========================= -->
+
+    <main class="content">
+
+        <div class="header">
+
+            <h1>AI Sales Intelligence Dashboard</h1>
+
+            <form action="/search">
+
+                <input type="text"
+                       name="q"
+                       placeholder="Search Company...">
+
+                <button type="submit">
+
+                    Search
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- Dashboard Cards -->
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>Total Companies</h3>
+
+                <h1>{{ total_companies }}</h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Profitable</h3>
+
+                <h1>{{ profitable }}</h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Loss Companies</h3>
+
+                <h1>{{ loss }}</h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Average Lead Score</h3>
+
+                <h1>{{ average_score }}</h1>
+
+            </div>
+
+        </div>
+                {% if company %}
+
+        <!-- ========================= -->
+        <!-- Company Information -->
+        <!-- ========================= -->
+
+        <div class="company-card">
+
+            <div class="company-header">
+
+                <h2>{{ company.company_name }}</h2>
+
+                <span class="badge">{{ company.industry }}</span>
+
+            </div>
+
+            <div class="grid">
+
+                <div class="info-box">
+
+                    <h3>👤 Contact Person</h3>
+
+                    <p><strong>Name:</strong> {{ company.contact_person }}</p>
+
+                    <p><strong>Designation:</strong> {{ company.designation }}</p>
+
+                    <p><strong>Email:</strong> {{ company.email }}</p>
+
+                    <p><strong>Phone:</strong> {{ company.phone }}</p>
+
+                    <p><strong>Website:</strong> {{ company.website }}</p>
+
+                </div>
+
+                <div class="info-box">
+
+                    <h3>🏢 Company Details</h3>
+
+                    <p><strong>Employees:</strong> {{ company.employees }}</p>
+
+                    <p><strong>Location:</strong> {{ company.location }}</p>
+
+                    <p><strong>Funding:</strong> {{ company.funding }}</p>
+
+                    <p><strong>Technology:</strong> {{ company.technology }}</p>
+
+                </div>
+
+            </div>
+
+            <div class="grid">
+
+                <div class="info-box">
+
+                    <h3>💰 Financial Details</h3>
+
+                    <p><strong>Revenue:</strong> {{ company.revenue }}</p>
+
+                    <p><strong>Expenses:</strong> {{ company.expenses }}</p>
+
+                    <p><strong>Profit:</strong> {{ company.profit }}</p>
+
+                    <p><strong>Profit Margin:</strong> {{ company.profit_margin }}</p>
+
+                    <p><strong>Status:</strong>
+
+                        {% if company.financial_status=="Profitable" %}
+                        <span class="profit">🟢 Profitable</span>
+                        {% else %}
+                        <span class="loss">🔴 Loss</span>
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+                <div class="info-box">
+
+                    <h3>🤖 AI Sales Intelligence</h3>
+
+                    <p><strong>Lead Score:</strong> {{ company.lead_score }}/100</p>
+
+                    <p><strong>Buying Intent:</strong> {{ company.buying_intent }}</p>
+
+                    <p><strong>Priority:</strong> {{ ai.priority }}</p>
+
+                    <p><strong>Risk:</strong> {{ ai.risk }}</p>
+
+                    <p><strong>Recommendation:</strong></p>
+
+                    <div class="recommendation">
+
+                        {{ ai.action }}
+
+                    </div>
+
+                </div>
+
+            </div>
+                    <!-- ========================= -->
+        <!-- Revenue & Profit Chart -->
+        <!-- ========================= -->
+
+        <div class="grid">
+
+            <div class="info-box">
+
+                <h3>📊 Revenue vs Profit</h3>
+
+                <canvas id="financeChart"></canvas>
+
+            </div>
+
+            <div class="info-box">
+
+                <h3>🎯 Lead Qualification Score</h3>
+
+                <div class="progress">
+
+                    <div class="progress-bar"
+
+                        style="width: {{ company.lead_score }}%;">
+
+                        {{ company.lead_score }}%
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <h3>🏆 Win Probability</h3>
+
+                <div class="progress">
+
+                    <div class="progress-bar success"
+
+                        style="width: {{ company.win_probability }}%;">
+
+                        {{ company.win_probability }}%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Business Health -->
+        <!-- ========================= -->
+
+        <div class="grid">
+
+            <div class="info-box">
+
+                <h3>💼 Business Health Score</h3>
+
+                <h1 style="color:#28a745;">
+
+                    {{ company.lead_score }}/100
+
+                </h1>
+
+                <p>
+
+                    Overall company health based on
+
+                    Lead Score,
+
+                    Financial Status,
+
+                    Buying Intent,
+
+                    and Win Probability.
+
+                </p>
+
+            </div>
+
+            <div class="info-box">
+
+                <h3>🤖 AI Recommendation</h3>
+
+                <ul>
+
+                    <li>✔ {{ ai.level }}</li>
+
+                    <li>✔ {{ ai.finance }}</li>
+
+                    <li>✔ {{ ai.action }}</li>
+
+                    <li>✔ Risk Level : {{ ai.risk }}</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Sales Pipeline -->
+        <!-- ========================= -->
+
+        <div class="info-box">
+
+            <h3>📈 Sales Pipeline</h3>
+
+            <div class="pipeline">
+
+                <div class="stage">New Lead</div>
+
+                <div class="stage">Qualified</div>
+
+                <div class="stage">Contacted</div>
+
+                <div class="stage">Demo</div>
+
+                <div class="stage">Proposal</div>
+
+                <div class="stage">Negotiation</div>
+
+                <div class="stage won">Won</div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Footer -->
+        <!-- ========================= -->
+
+        <footer>
+
+            <p>
+
+                © 2026 SalesPro Technologies
+
+                | AI Sales Intelligence & Lead Management System
+
+            </p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script>
+
+const ctx=document.getElementById('financeChart');
+
+new Chart(ctx,{
+
+type:'bar',
+
+data:{
+
+labels:['Revenue','Expenses','Profit'],
+
+datasets:[{
+
+label:'₹ Crores',
+
+data:[
+
+parseInt("{{ company.revenue }}".replace("₹","")),
+
+parseInt("{{ company.expenses }}".replace("₹","")),
+
+parseInt("{{ company.profit }}".replace("₹",""))
+
+]
+
+}]
+
+}
+
+});
+
+</script>
+{% endif %}
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

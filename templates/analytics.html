@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics Dashboard | SalesPro Technologies</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <h2>SalesPro Technologies</h2>
+
+        <a href="/">🏠 Dashboard</a>
+
+        <a href="/add">➕ Add Company</a>
+
+        <a href="/compare">⚖ Compare</a>
+
+        <a href="/export">📄 Export CSV</a>
+
+    </aside>
+
+    <main class="content">
+
+        <h1>📊 Sales Analytics Dashboard</h1>
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>Total Companies</h3>
+
+                <h1>{{ companies|length }}</h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Profitable</h3>
+
+                <h1>{{ profitable }}</h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Loss Companies</h3>
+
+                <h1>{{ loss }}</h1>
+
+            </div>
+
+        </div>
+
+        <div class="grid">
+
+            <div class="info-box">
+
+                <h3>Revenue Analysis</h3>
+
+                <canvas id="revenueChart"></canvas>
+
+            </div>
+
+            <div class="info-box">
+
+                <h3>Profit Analysis</h3>
+
+                <canvas id="profitChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <div class="grid">
+
+            <div class="info-box">
+
+                <h3>Profit vs Loss</h3>
+
+                <canvas id="statusChart"></canvas>
+
+            </div>
+
+            <div class="info-box">
+
+                <h3>Top Companies</h3>
+
+                <table class="table">
+
+                    <tr>
+
+                        <th>Company</th>
+
+                        <th>Lead Score</th>
+
+                    </tr>
+
+                    {% for company in companies %}
+
+                    <tr>
+
+                        <td>{{ company.company_name }}</td>
+
+                        <td>{{ company.lead_score }}</td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>🤖 AI Insights</h3>
+
+            <ul>
+
+                <li>Total companies analysed: <strong>{{ companies|length }}</strong></li>
+
+                <li>Profitable companies: <strong>{{ profitable }}</strong></li>
+
+                <li>Loss companies: <strong>{{ loss }}</strong></li>
+
+                <li>Use Company Comparison to compare top-performing clients.</li>
+
+                <li>High lead score companies should be prioritized for follow-up.</li>
+
+            </ul>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+const companyNames = {{ names|tojson }};
+
+const revenue = {{ revenue|tojson }};
+
+const profit = {{ profit|tojson }};
+
+new Chart(document.getElementById("revenueChart"), {
+
+    type: "bar",
+
+    data: {
+
+        labels: companyNames,
+
+        datasets: [{
+
+            label: "Revenue (₹ Crores)",
+
+            data: revenue
+
+        }]
+
+    }
+
+});
+
+new Chart(document.getElementById("profitChart"), {
+
+    type: "line",
+
+    data: {
+
+        labels: companyNames,
+
+        datasets: [{
+
+            label: "Profit (₹ Crores)",
+
+            data: profit
+
+        }]
+
+    }
+
+});
+
+new Chart(document.getElementById("statusChart"), {
+
+    type: "pie",
+
+    data: {
+
+        labels: ["Profitable", "Loss"],
+
+        datasets: [{
+
+            data: [{{ profitable }}, {{ loss }}]
+
+        }]
+
+    }
+
+});
+
+</script>
+
+</body>
+
+</html>

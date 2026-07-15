@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Compare Companies | SalesPro Technologies</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <h2>SalesPro Technologies</h2>
+
+        <a href="/">🏠 Dashboard</a>
+
+        <a href="/add">➕ Add Company</a>
+
+        <a href="/analytics">📊 Analytics</a>
+
+        <a href="/export">📄 Export CSV</a>
+
+    </aside>
+
+
+    <main class="content">
+
+        <h1>⚖ Company Comparison</h1>
+
+        <form method="GET" action="/compare" class="compare-form">
+
+            <select name="company1">
+
+                {% for c in companies %}
+
+                <option value="{{ c.id }}"
+                {% if company1 and company1.id==c.id %}selected{% endif %}>
+
+                    {{ c.company_name }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <select name="company2">
+
+                {% for c in companies %}
+
+                <option value="{{ c.id }}"
+                {% if company2 and company2.id==c.id %}selected{% endif %}>
+
+                    {{ c.company_name }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <button class="btn">
+
+                Compare
+
+            </button>
+
+        </form>
+
+        {% if company1 and company2 %}
+
+        <table class="compare-table">
+
+            <tr>
+
+                <th>Feature</th>
+
+                <th>{{ company1.company_name }}</th>
+
+                <th>{{ company2.company_name }}</th>
+
+            </tr>
+
+            <tr>
+
+                <td>Industry</td>
+
+                <td>{{ company1.industry }}</td>
+
+                <td>{{ company2.industry }}</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Revenue</td>
+
+                <td>{{ company1.revenue }}</td>
+
+                <td>{{ company2.revenue }}</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Expenses</td>
+
+                <td>{{ company1.expenses }}</td>
+
+                <td>{{ company2.expenses }}</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Profit</td>
+
+                <td>{{ company1.profit }}</td>
+
+                <td>{{ company2.profit }}</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Lead Score</td>
+
+                <td>{{ company1.lead_score }}</td>
+
+                <td>{{ company2.lead_score }}</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Buying Intent</td>
+
+                <td>{{ company1.buying_intent }}</td>
+
+                <td>{{ company2.buying_intent }}</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Financial Status</td>
+
+                <td>{{ company1.financial_status }}</td>
+
+                <td>{{ company2.financial_status }}</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Win Probability</td>
+
+                <td>{{ company1.win_probability }}%</td>
+
+                <td>{{ company2.win_probability }}%</td>
+
+            </tr>
+
+            <tr>
+
+                <td>CEO</td>
+
+                <td>{{ company1.ceo }}</td>
+
+                <td>{{ company2.ceo }}</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Sales Director</td>
+
+                <td>{{ company1.sales_director }}</td>
+
+                <td>{{ company2.sales_director }}</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Finance Manager</td>
+
+                <td>{{ company1.finance_manager }}</td>
+
+                <td>{{ company2.finance_manager }}</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Procurement Head</td>
+
+                <td>{{ company1.procurement_head }}</td>
+
+                <td>{{ company2.procurement_head }}</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Customer Rating</td>
+
+                <td>⭐ {{ company1.customer_rating }}</td>
+
+                <td>⭐ {{ company2.customer_rating }}</td>
+
+            </tr>
+
+        </table>
+
+        {% endif %}
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
